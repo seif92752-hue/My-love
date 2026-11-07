@@ -17,7 +17,6 @@
             color: #4a4a4a;
             padding: 20px;
             padding-bottom: 50px;
-            position: relative;
         }
         .container {
             max-width: 700px;
@@ -26,8 +25,18 @@
         h1 {
             text-align: center;
             color: #d80032;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             font-size: 28px;
+        }
+        .counter-box {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #ff4b72;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .section {
             background: rgba(255, 255, 255, 0.9);
@@ -117,12 +126,31 @@
             padding: 0;
             z-index: 2;
         }
+        .audio-player {
+            width: 100%;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>موقعنا المميز ❤️</h1>
+        
+        <!-- قسم العداد (التاريخ) -->
+        <div class="counter-box" id="relationshipCounter">
+            جاري حساب الأيام الجميلة...
+        </div>
+
+        <!-- قسم أغنية الخلفية -->
+        <div class="section" style="text-align: center;">
+            <h2>أغنية الخلفية 🎶</h2>
+            <!-- تقدر تحط رابط الأغنية المفضل ليك جوه الـ src -->
+            <audio controls loop class="audio-player">
+                <source src="" type="audio/mp3">
+                متصفحك لا يدعم مشغل الصوت
+            </audio>
+        </div>
 
         <!-- قسم الملاحظات والرسائل -->
         <div class="section">
@@ -155,6 +183,21 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // عداد التاريخ (احسب الأيام من تاريخ البداية اللي تحبه)
+        function updateCounter() {
+            // تقدر تغير التاريخ ده لتاريخ بدايتكم الحقيقي (مثلاً سنة 2024, شهر 11, يوم 28)
+            const startDate = new Date("2024-11-28");
+            const currentDate = new Date();
+            const diffTime = Math.abs(currentDate - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            const counterElement = document.getElementById('relationshipCounter');
+            if (counterElement) {
+                counterElement.innerText = `مع بعض من ${diffDays} يوم ❤️`;
+            }
+        }
+        updateCounter();
 
         // 1. الملاحظات
         window.saveNote = async function() {
