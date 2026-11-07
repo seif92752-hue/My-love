@@ -5,39 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My-love App</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
         body {
-            background: linear-gradient(135deg, #ffefeec 0%, #ffc2d1 50%, #ffefec 100%);
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffe5ec 100%);
             min-height: 100vh;
             color: #4a4a4a;
-            padding-bottom: 50px;
-            font-family: 'Cairo', sans-serif;
-            position: relative;
-            margin: 0;
             padding: 20px;
+            padding-bottom: 50px;
+            position: relative;
         }
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #d80032;
+            margin-bottom: 25px;
+            font-size: 28px;
         }
         .section {
-            margin-bottom: 30px;
-            padding: 15px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
         }
-        input, textarea {
+        .section h2 {
+            color: #ff4b72;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        input[type="text"], textarea {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #ffd1dc;
             border-radius: 8px;
-            box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+        textarea {
+            height: 90px;
+            resize: vertical;
         }
         button {
             background-color: #ff4b72;
@@ -46,38 +62,60 @@
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-family: 'Cairo', sans-serif;
             font-weight: bold;
+            font-size: 14px;
+            transition: background 0.3s;
         }
         button:hover {
             background-color: #e03e62;
         }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
         .note-card, .image-card {
-            background: #fff5f7;
+            background: #fff;
             padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
+            border-radius: 10px;
             position: relative;
-            border: 1px solid #ffd1dc;
+            border: 1px solid #ffe5ec;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            word-break: break-word;
+        }
+        .note-card h3 {
+            color: #d80032;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .note-card p {
+            font-size: 14px;
+            color: #666;
+        }
+        .image-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
         }
         .delete-btn {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 8px;
+            left: 8px;
             background: #ff4b72;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 25px;
-            height: 25px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
-            font-size: 12px;
-            line-height: 25px;
+            font-size: 11px;
+            line-height: 22px;
             text-align: center;
             padding: 0;
-        }
-        #notesGrid, #imageGallery {
-            margin-top: 15px;
+            z-index: 2;
         }
     </style>
 </head>
@@ -86,50 +124,39 @@
     <div class="container">
         <h1>موقعنا المميز ❤️</h1>
 
-        <!-- قسم الملاحظات والكتابة -->
+        <!-- قسم الملاحظات والرسائل -->
         <div class="section">
             <h2>إضافة ملاحظة أو رسالة</h2>
             <input type="text" id="noteTitle" placeholder="عنوان الرسالة...">
             <textarea id="noteContent" placeholder="اكتب كلامك هنا..."></textarea>
             <button onclick="saveNote()">حفظ الرسالة</button>
-            <div id="notesGrid"></div>
+            <div id="notesGrid" class="grid-container"></div>
         </div>
 
         <!-- قسم الصور -->
         <div class="section">
             <h2>صور الذكريات</h2>
             <input type="file" id="imageInput" accept="image/*" multiple onchange="uploadImages(event)">
-            <div id="imageGallery"></div>
+            <div id="imageGallery" class="grid-container"></div>
         </div>
     </div>
 
-    <!-- Firebase SDK (Modular) -->
+    <!-- Firebase Code -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // إعدادات فايربيس الخاصة بك
+        // إعدادات فايربيس
         const firebaseConfig = {
-            apiKey: "AIzaSy...", // استبدلهم بالبيانات الخاصة بمشروعك لو لم تكن مربوطة في ملف خارجي
             authDomain: "my-love-app-c8f35.firebaseapp.com",
             projectId: "my-love-app-c8f35",
             storageBucket: "my-love-app-c8f35.appspot.com",
-            messagingSenderId: "...",
-            appId: "..."
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // جعل الدوال متاحة عالمياً في الصفحة
-        window.db = db;
-        window.collection = collection;
-        window.addDoc = addDoc;
-        window.getDocs = getDocs;
-        window.deleteDoc = deleteDoc;
-        window.doc = doc;
-
-        // دالة حفظ الملاحظات
+        // 1. الملاحظات
         window.saveNote = async function() {
             const titleInput = document.getElementById('noteTitle');
             const contentInput = document.getElementById('noteContent');
@@ -149,15 +176,13 @@
                 contentInput.value = '';
                 loadNotes();
             } catch (error) {
-                console.error("خطأ في حفظ الملاحظة:", error);
+                console.error("خطأ في الحفظ:", error);
             }
         };
 
-        // دالة تحميل الملاحظات
         window.loadNotes = async function() {
             const grid = document.getElementById('notesGrid');
             if (!grid) return;
-            
             grid.innerHTML = '';
             try {
                 const querySnapshot = await getDocs(collection(db, "notes"));
@@ -173,21 +198,20 @@
                     grid.prepend(card);
                 });
             } catch (error) {
-                console.error("خطأ في تحميل الملاحظات:", error);
+                console.error("خطأ في التحميل:", error);
             }
         };
 
-        // دالة حذف الملاحظة
         window.deleteNote = async function(id) {
             try {
                 await deleteDoc(doc(db, "notes", id));
                 loadNotes();
             } catch (error) {
-                console.error("خطأ في حذف الملاحظة:", error);
+                console.error("خطأ في الحذف:", error);
             }
         };
 
-        // دالة رفع الصور
+        // 2. الصور
         window.uploadImages = async function(e) {
             const files = e.target.files;
             if (!files || files.length === 0) return;
@@ -202,18 +226,16 @@
                         });
                         loadImages();
                     } catch (error) {
-                        console.error("خطأ في رفع الصورة:", error);
+                        console.error("خطأ في الرفع:", error);
                     }
                 };
                 reader.readAsDataURL(file);
             }
         };
 
-        // دالة تحميل الصور
         window.loadImages = async function() {
             const gallery = document.getElementById('imageGallery');
             if (!gallery) return;
-
             gallery.innerHTML = '';
             try {
                 const querySnapshot = await getDocs(collection(db, "images"));
@@ -223,7 +245,7 @@
                     imgCard.className = 'image-card';
                     imgCard.innerHTML = `
                         <button class="delete-btn" onclick="deleteImage('${docSnap.id}')">X</button>
-                        <img src="${data.url}" alt="صورة مرفوعة" style="max-width:100%; border-radius:8px; display:block; margin-top:5px;">
+                        <img src="${data.url}" alt="صورة">
                     `;
                     gallery.prepend(imgCard);
                 });
@@ -232,5 +254,20 @@
             }
         };
 
-        // دالة حذف الصورة
-        window.deleteImage = async
+        window.deleteImage = async function(id) {
+            try {
+                await deleteDoc(doc(db, "images", id));
+                loadImages();
+            } catch (error) {
+                console.error("خطأ في حذف الصورة:", error);
+            }
+        };
+
+        // التشغيل التلقائي عند الفتح
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNotes();
+            loadImages();
+        });
+    </script>
+</body>
+</html>
