@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى أميرتي وكُل حياتي ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4b72;
+            --secondary: #ff85a1;
+            --bg-glass: rgba(255, 255, 255, 0.88);
+            --card-shadow: 0 10px 30px rgba(255, 75, 114, 0.15);
+            --danger: #ff3b30;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffe5ec 100%);
+            min-height: 100vh;
+            color: #4a4a4a;
+            padding-bottom: 50px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .heart-bg {
+            position: fixed;
+            top: -10vh;
+            font-size: 1.5rem;
+            color: rgba(255, 75, 114, 0.3);
+            animation: fall 10s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin: 30px 0;
+            background: var(--bg-glass);
+            padding: 30px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--card-shadow);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        header h1 {
+            font-family: 'Reem Kufi', sans-serif;
+            color: var(--primary);
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .timer-card {
+            background: var(--bg-glass);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+        }
+
+        .timer-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .time-box {
+            background: #fff;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .time-box label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .section-card {
+            background: var(--bg-glass);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .audio-wrapper {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background: var(--primary);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .voice-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .btn-action {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.03);
+        }
+
+        .btn-action.stop {
+            background: #555;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .record-timer {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .photo-card {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+
+        .photo-card img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 59, 48, 0.85);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .add-note-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .add-note-form input, .add-note-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .note-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            border-right: 4px solid var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .note-card h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+            padding-left: 25px;
+        }
+
+        .note-card p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .note-card .delete-btn {
+            top: 10px;
+            left: 10px;
+            right: auto;
+        }
+
+        .love-btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .love-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 75, 114, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>إلى أميرتي وكُل حياتي ❤️</h1>
+            <p>كل لحظة معاكي هي أجمل لحظات عمري...</p>
+        </header>
+
+        <!-- الموسيقى الخلفية -->
+        <div class="section-card">
+            <div class="section-title"><span>🎶</span> الموسيقى الخلفية (Anlatamam - Kara Sevda)</div>
+            <div class="audio-wrapper">
+                <label class="custom-file-upload">
+                    اختاري/ارفعي أغنية Anlatamam من الموبايل 🎵
+                    <input type="file" id="bgMusicInput" accept="audio/*">
+                </label>
+                <audio id="bgMusicPlayer" loop style="display:none; width: 100%; margin-top: 10px;" controls></audio>
+                <p id="musicHint" style="color: #999; font-size: 0.9rem;">ارفعي ملف الأغنية لتعمل في الخلفية</p>
+            </div>
+        </div>
+
+        <!-- العداد -->
+        <div class="timer-card">
+            <h3>مع بعض بقالنا من 14 نوفمبر 2024 ❤️</h3>
+            <div class="timer-grid">
+                <div class="time-box"><span id="days">0</span><label>يوم</label></div>
+                <div class="time-box"><span id="hours">0</span><label>ساعة</label></div>
+                <div class="time-box"><span id="minutes">0</span><label>دقيقة</label></div>
+                <div class="time-box"><span id="seconds">0</span><label>ثانية</label></div>
+            </div>
+        </div>
+
+        <!-- الفويس السحابي -->
+        <div class="section-card">
+            <div class="section-title"><span>🎙️</span> سجل رسالتك الصوتية (على السحابة)</div>
+            <div class="audio-wrapper">
+                <div class="voice-controls">
+                    <button class="btn-action" id="startRecBtn" onclick="startRecording()">🎙️ ابدأ التسجيل</button>
+                    <button class="btn-action stop" id="stopRecBtn" onclick="stopRecording()" disabled>⏹️ إيقاف وحفظ</button>
+                    <span class="record-timer" id="recTimer">00:00</span>
+                </div>
+                <div id="audioPlayerContainer" style="display:none; margin-top: 15px;">
+                    <audio id="audioPlayer" controls style="width:100%;"></audio>
+                    <div style="margin-top: 10px;">
+                        <button class="btn-danger" onclick="deleteVoiceOnline()">🗑️ حذف التسجيل</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- معرض الصور السحابي -->
+        <div class="section-card">
+            <div class="section-title"><span>📸</span> ذكرياتنا الجميلة</div>
+            <label class="custom-file-upload">
+                إضافة صور من الموبايل ➕
+                <input type="file" id="imageInput" accept="image/*" multiple onchange="uploadImages(event)">
+            </label>
+            <div class="gallery-grid" id="gallery"></div>
+        </div>
+
+        <!-- رسائل ليه بحبك السحابية -->
+        <div class="section-card">
+            <div class="section-title"><span>💌</span> ليه بحبك؟</div>
+            <div class="add-note-form">
+                <input type="text" id="noteTitle" placeholder="عنوان الرسالة (مثال: عشان ضحكتك)">
+                <textarea id="noteContent" rows="2" placeholder="اكتب تفاصيل الرسالة..."></textarea>
+                <button class="btn-action" onclick="addNewNote()" style="align-self: flex-start;">إضافة رسالة جديدة ✨</button>
+            </div>
+            <div class="notes-grid" id="notesGrid"></div>
+        </div>
+
+        <div class="love-btn-container">
+            <button class="love-btn" onclick="sendLove()">اضغطي هنا لو بتحبيني ❤️</button>
+        </div>
+    </div>
+
+    <!-- كود إعدادات Firebase وبدون الحاجة لـ Storage -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIffaB61Ck3QXddpmsdU1wQiYOwN2IMwg",
+            authDomain: "my-love-app-c8f35.firebaseapp.com",
+            projectId: "my-love-app-c8f35",
+            storageBucket: "my-love-app-c8f35.firebasestorage.app",
+            messagingSenderId: "811402456090",
+            appId: "1:811402456090:web:ebebb24c7f5e350e9735a3",
+            measurementId: "G-7R7YCR0GKM"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.onload = async function() {
+            loadNotes();
+            loadImages();
+            loadVoice();
+        };
+
+        // العداد الزمني
+        const startDate = new Date('2024-11-14T00:00:00');
+        setInterval(() => {
+            const diff = new Date() - startDate;
+            if (diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                document.getElementById('minutes').innerText = Math.floor((diff / 1000 / 60) % 60);
+                document.getElementById('seconds').innerText = Math.floor((diff / 1000) % 60);
+            }
+        }, 1000);
+
+        // تشغيل الموسيقى الخلفية المرفوعة محلياً
+        const bgMusicInput = document.getElementById('bgMusicInput');
+        const bgMusicPlayer = document.getElementById('bgMusicPlayer');
+        const musicHint = document.getElementById('musicHint');
+        bgMusicInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                bgMusicPlayer.src = URL.createObjectURL(file);
+                bgMusicPlayer.style.display = 'block';
+                musicHint.style.display = 'none';
+                bgMusicPlayer.play();
+            }
+        });
+
+        // إدارة الرسائل (ليه بحبك)
+        window.addNewNote = async function() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+            if (!title || !content) return alert('اكتب العنوان والرسالة!');
+
+            await addDoc(collection(db, "notes"), { title, content, timestamp: Date.now() });
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            loadNotes();
+        }
+
+        async function loadNotes() {
+            const grid = document.getElementById('notesGrid');
+            grid.innerHTML = '';
+            const querySnapshot = await getDocs(collection(db, "notes"));
+            querySnapshot.forEach((document) => {
+                const data = document.data();
+                const card = document.createElement('div');
+                card.className = 'note-card';
+                card.innerHTML = `
+                    <button class="delete-btn" onclick="deleteNote('${document.id}')">❌</button>
+                    <h4>${data.title}</h4>
+                    <p>${data.content}</p>
+                `;
+                grid.prepend(card);
+            });
+        }
+
+        window.deleteNote = async function(id) {
+            await deleteDoc(doc(db, "notes", id));
+            loadNotes();
+        }
+
+        // إدارة الصور (بدون Storage - تخزين مباشر بقاعدة البيانات)
+        window.uploadImages = async function(e) {
+            const files = e.target.files;
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = async function(event) {
+                    const base64Image = event.target.result;
+                    await addDoc(collection(db, "images"), { url: base64Image, timestamp: Date.now() });
+                    loadImages();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function loadImages() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+            const querySnapshot = await getDocs(collection(db, "images"));
+            querySnapshot.forEach((document) => {
+                const data = document.data();
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.innerHTML = `
+                    <button class="delete-btn" onclick="deleteImage('${document.id}')">❌</button>
+                    <img src="${data.url}" alt="Memory">
+                `;
+                gallery.prepend(card);
+            });
+        }
+
+        window.deleteImage = async function(id) {
+            await deleteDoc(doc(db, "images", id));
+            loadImages();
+        }
+
+        // تسجيل الفويس السحابي (بدون Storage)
+        let mediaRecorder;
+        let audioChunks = [];
+        let timerInterval;
+        let recordSeconds = 0;
+
+        window.startRecording = async function() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(audioBlob);
+                    reader.onloadend = async function() {
+                        const base64Audio = reader.result;
+                        await setDoc(doc(db, "settings", "voiceData"), { url: base64Audio });
+                        loadVoice();
+                    };
+                };
+
+                mediaRecorder.start();
+                document.getElementById('startRecBtn').disabled = true;
+                document.getElementById('stopRecBtn').disabled = false;
+                
+                recordSeconds = 0;
+                timerInterval = setInterval(() => {
+                    recordSeconds++;
+                    const mins = String(Math.floor(recordSeconds / 60)).padStart(2, '0');
+                    const secs = String(recordSeconds % 60).padStart(2, '0');
+                    document.getElementById('recTimer').innerText = `${mins}:${secs}`;
+                }, 1000);
+            } catch (err) {
+                alert('يرجى السماح بصلاحية استخدام الميكروفون للتسجيل');
+            }
+        }
+
+        window.stopRecording = function() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                clearInterval(timerInterval);
+                document.getElementById('startRecBtn').disabled = false;
+                document.getElementById('stopRecBtn').disabled = true;
+            }
+        }
+
+        async function loadVoice() {
+            const docSnap = await getDoc(doc(db, "settings", "voiceData"));
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const player = document.getElementById('audioPlayer');
+                player.src = data.url;
+                document.getElementById('audioPlayerContainer').style.display = 'block';
+            }
+        }
+
+        window.deleteVoiceOnline = async function() {
+            try {
+                await deleteDoc(doc(db, "settings", "voiceData"));
+                document.getElementById('audioPlayer').src = '';
+                document.getElementById('audioPlayerContainer').style.display = 'none';
+                document.getElementById('recTimer').innerText = '00:00';
+            } catch(e) {
+                alert('حدث خطأ أثناء الحذف');
+            }
+        }
+
+        window.sendLove = () => alert('أنا بحبك أكتر بكتير! 💖✨');
+    </script>
+</body>
+</html>
